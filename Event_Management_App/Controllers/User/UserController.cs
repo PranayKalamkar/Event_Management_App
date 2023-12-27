@@ -31,14 +31,14 @@ namespace Event_Management_App.Controllers.User
         {
             using(MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                const string query = "Insert into SignUp(Username,Email,SignUpPassword,ConfirmSignUpPassword) values (@Username,@Email,@SignUpPassword,@ConfirmSignUpPassword);";
+                const string query = "Insert into SignUp(Username,Email,SPassword) values (@Username,@Email,@SPassword);";
                 using(MySqlCommand command = new MySqlCommand(query, connection))
                 {
                     connection.Open();
                     command.Parameters.AddWithValue("@Username", sign.Username);
                     command.Parameters.AddWithValue("@Email", sign.Email);
-                    command.Parameters.AddWithValue("@SignUpPassword", sign.SignUpPassword);
-                    command.Parameters.AddWithValue("@ConfirmSignUpPassword", sign.ConfirmSignUpPassword);
+                    command.Parameters.AddWithValue("@SPassword", sign.SPassword);
+                    //command.Parameters.AddWithValue("@ConfirmSignUpPassword", sign.ConfirmSignUpPassword);
                     command.ExecuteNonQuery();
                 }
             }
@@ -51,49 +51,61 @@ namespace Event_Management_App.Controllers.User
         }
 
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        public IActionResult Login(string username, string password, SignUpModel omodel)
         {
-            if (IsValidUser(username, password))
-            {
-                // Redirect to the dashboard or another secure page
-                return RedirectToAction("Dashboard","Index");
-            }
-            else
-            {
-                ViewBag.ErrorMessage = "Invalid username or password";
-                return View();
-            }
-           
-        }
 
-        private bool IsValidUser(string username, string password)
-        {
-            using(MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                const string query = "select count(*) from SignUp where Username=@Username AND  ConfirmSignUpPassword=@ConfirmSignUpPassword";
-
-                using (MySqlCommand command = new MySqlCommand(query, connection))
+                const string Query = "Select Username,SPassword from SignUp where Username=@Username and SPassword=@SPassword;";
+                using (MySqlCommand command = new MySqlCommand(Query, connection))
                 {
                     connection.Open();
                     command.Parameters.AddWithValue("@Username", username);
-                    command.Parameters.AddWithValue("@ConfirmSignUpPassword", password);
+                    command.Parameters.AddWithValue("@SPassword", password);
+                    command.ExecuteNonQuery();
 
-                    long count = (long)command.ExecuteScalar(); // Use long to accommodate larger values
-
-                    return count > 0;
-
-                    //object result = command.ExecuteScalar();
-
-                    //if (result != null)
-                    //{
-                    //    int count = Convert.ToInt32(result);
-                    //    return count > 0;
-                    //}
-
-                    //return false;
+                }
+                if (omodel.Username == username && omodel.SPassword == password)
+                {
+                    return RedirectToAction("Dashboard");
+                }
+                else
+                {
+                    ViewData["Message"] = "User Login Details failed!";
+                    return View();
                 }
             }
+
         }
+
+        //private bool IsValidUser(string username, string password)
+        //{
+        //    using (MySqlConnection connection = new MySqlConnection(connectionString))
+        //    {
+        //        const string query = "select count(*) from SignUp where Username=@Username AND  ConfirmSignUpPassword=@ConfirmSignUpPassword";
+
+        //        using (MySqlCommand command = new MySqlCommand(query, connection))
+        //        {
+        //            connection.Open();
+        //            command.Parameters.AddWithValue("@Username", username);
+        //            command.Parameters.AddWithValue("@ConfirmSignUpPassword", password);
+
+        //            long count = (long)command.ExecuteScalar(); // Use long to accommodate larger values
+
+        //            return count > 0;
+
+        //            object result = command.ExecuteScalar();
+
+        //            if (result != null)
+        //            {
+        //                int count = Convert.ToInt32(result);
+        //                return count > 0;
+        //            }
+
+        //            return false;
+        //        }
+        //    }
+        //}
 
     }
 }

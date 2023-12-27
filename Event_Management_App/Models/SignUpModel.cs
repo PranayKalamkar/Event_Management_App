@@ -16,10 +16,6 @@ namespace Event_Management_App.Models
 
         [Required]
         [StringLength(50)]
-        public string? SignUpPassword { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string? ConfirmSignUpPassword { get; set; }
+        public string? SPassword { get; set; }
     }
 }
