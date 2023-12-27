@@ -1,0 +1,21 @@
+create database event;
+
+use event;
+
+drop table Login;
+
+
+create table SignUp(
+Id int(3),
+Username varchar(100),
+Email varchar(100),
+SignUpPassword varchar(255),
+ConfirmSignUpPassword varchar(255)
+);
+
+Insert into SignUp(Username,Email,SignUpPassword,ConfirmSignUpPassword) values("Suraj","suraj@gmail.com","suraj@123","suraj@123");
+
+desc SignUp;
+desc Login;
+
+select * from SignUp;

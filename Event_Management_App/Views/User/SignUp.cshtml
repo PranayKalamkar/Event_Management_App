@@ -1,0 +1,30 @@
+﻿<div class="outer">
+    <div class="login-container registration-container">
+        <div class="col-12">
+            <h3>Register</h3>
+            <form method="post" action="">
+                <div class="input-group">
+                    <input type="text" id="username" name="Username" autocomplete="off" required>
+                    <label for="username">Full Name:</label>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="email" name="Email" autocomplete="off" required>
+                    <label for="email">Email:</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" name="SignUpPassword" autocomplete="off" required>
+                    <label for="password">Password:</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="confirmPassword" name="ConfirmSignUpPassword" autocomplete="off" required>
+                    <label for="confirmPassword">Confirm Passowrd:</label>
+                </div>
+                @* <input name="submit" type="submit" value="Register"/> *@
+                <button type="submit">Register</button>
+                <div class="register-option">
+                    Already have an account? <a href="Login">Login</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
